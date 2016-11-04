@@ -1,0 +1,6 @@
+@@Instance Test Case lu.uni.lassy.excalibur.examples.helloworld.tests.instances.instance01 hidden
+@description
+"Specification of the execution of the unique, simple and non generic HelloWorld test case "
+
+@Instance Test Step lu.uni.lassy.excalibur.examples.helloworld.tests.instances.instance01.tsi01
+@Instance Test Step lu.uni.lassy.excalibur.examples.helloworld.tests.instances.instance01.tsi02

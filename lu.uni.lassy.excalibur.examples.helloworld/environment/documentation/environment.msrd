@@ -1,0 +1,125 @@
+/******************************************************/
+/********* ACTORS              ************************/
+/******************************************************/
+@@Actor
+lu.uni.lassy.excalibur.examples.helloworld.environment.actMsrCreator
+@description
+"the default \msrmessir creator actor who is the first to initiate the system.
+The \msrcode{actMsrCreator} class introduces an \msrcode{init} operation as all actor class type.This operation is necessary for instance creation and initialization.
+the \msrcode{actMsrCreator} input interface has no input message. This is often the case since it is a logical actor of the \msrmessir method that is mainly sending the first message in the system's history.
+"
+@outputEvent lu.uni.lassy.excalibur.examples.helloworld.environment.actMsrCreator.outactMsrCreator.oeCreateSystemAndEnvironment
+"is sent to initiate the system's state class instance and to create the environment elements (e.g. \msrcode{actYou} actor and and its interfaces)."
+@endOutputEvents
+
+/******************************************************/
+@@Actor
+lu.uni.lassy.excalibur.examples.helloworld.environment.actYou
+@description
+"Is representing any person that would like to receive an hello world message from the system."
+@inputEvent lu.uni.lassy.excalibur.examples.helloworld.environment.actYou.inactYou.ieHelloWorld
+" the system sends a string message as an hello world welcome message."
+@endInputEvents
+@outputEvent lu.uni.lassy.excalibur.examples.helloworld.environment.actYou.outactYou.oeHelloWorld
+"is sent to request the system to send back a kind hello message !."
+@endOutputEvents
+/******************************************************/
+/********* OPERATIONS - SYSTEM ************************/
+/******************************************************/
+@@Operation
+lu.uni.lassy.excalibur.examples.helloworld.environment.actMsrCreator.outactMsrCreator.oeCreateSystemAndEnvironment
+@description
+"
+This is an operation that creates the initial state for the system under development (i.e. SUD) and its environment. This corresponds to all the actor instances, their input and output interfaces, and their associations with the system state elements. It has to be specified and be the first to be satisfied for any simulation (cf. simulation section of \cite{messirbook}).
+"
+@preP
+"
+no additional condition is possible because the only available system element is one instance of the \msrcode{outactMsrCreator} !
+"
+@endPreP
+@preF
+"Since oeCreateSystemAndEnvironment is a special Messir operation no pre-condition can be added on system's state. Only additional conditions could be put on input parameters, if any."
+@endPreF
+
+@postF
+"
+there exists a new initialized instance of the \msrcode{ctState} class.
+"
+@postF
+"
+the environment is made of one new and inistialized instance of the \msrcode{actYou} class.
+"
+@postF
+"
+there exists a new initialized instance of the \msrcode{actMsrCreator} class. We see here the limitations of the OCL specification of this special operation since this actor should be the one sending through its output interface this current operation !
+"
+@endPostF
+@postP
+"
+the system protocol's boolean variable \msrcode{vpStarted} must be equal to true to define the status from which all other operations might be allowed to be called. In our case, it is useless of course since no operation is using it.
+"
+@endPostP
+
+/******************************************************/
+@@Operation
+lu.uni.lassy.excalibur.examples.helloworld.environment.actYou.outactYou.oeHelloWorld
+@description
+"
+This system operation is triggered by the YouAsActor actor (sending the corresponding output message through its output interface) and has for objective to make the system send to this same actor an hello message.
+"
+@preP
+"
+The system should be started. This is represented by the fact that the boolean protocol variable \msrcode{vpStarted} (part of the \msrcode{ctState} only instance attribute value) is equal to true.
+"
+@endPreP
+@preF
+"
+Always true. Thus, no restriction for this simple operation.
+"
+@endPreF
+@postF
+"
+a 'hello world' message is sent to the calling actor through its input interface accesible by navigation from the current output interface.
+"
+@endPostF
+@postP
+"
+The system stays in the same life cycle state, so no modification of the protocol state variables.
+"
+@endPostP
+
+/******************************************************/
+/********* OPERATIONS - ACTOR  ************************/
+/******************************************************/
+@@Operation
+lu.uni.lassy.excalibur.examples.helloworld.environment.actYou.init
+@description
+"
+Operation used for the initialization of actor instance of class \msrcode{actYou}.
+The specification of those operations is optional since there are default specifications for them. Anyhow, in some advanced systems it might be necessary to have a specific semantics for them. In this simple example, you can find the default specification.
+"
+@preP
+"
+since logical operations are not system operations triggered by actor's output messages, they cannot be constraigned by protocol variables. They do not participate in the system's life cycle.
+"
+@endPreP
+@preF
+"
+no pre-functional condition ! true as pre functional condition which means that this boolean operation should be total over its domain made of the system state values and input parameter values.
+"
+@endPreF
+@postF
+"
+The current \msrcode{actYou} instance should be a new instance in the post state of the system.
+"
+@postF
+"
+It should also exist in the post state one input interface and one output interface for this actor that should be associated to this actor instance.
+As a boolean operation it should return true when the complete post condition is satified and false if not.
+"
+@endPostF
+@postP
+"
+creating a \msrcode{actYou} instance has no impact on the system's life cycle.
+"
+@endPostP

@@ -1,0 +1,19 @@
+@@view cm-lv-01
+@model Concept
+@level Local 
+@sublevel Primary Class
+@number 1
+@description 
+'shows all the classes belonging to the primary types. In this trivial example, there are no specific classes. Thus only the default \msrmessir \msrcode{ctState} class belongs to this type category for the concept model.
+'
+@caption "The \msrcode{ctState} class"
+@@view cm-gv-01
+@model Concept
+@level Global
+@sublevel Primary Class
+@number 1
+@description 
+'shows the only primary type class type \msrmessir \msrcode{ctState} class together with the environment elements. This view is global since it shows the \msrmessir relationships between the class types of primary type and the environment.
+'
+@caption "The \msrcode{ctState} class and its relationships with actors"
+@scale MaxWidth

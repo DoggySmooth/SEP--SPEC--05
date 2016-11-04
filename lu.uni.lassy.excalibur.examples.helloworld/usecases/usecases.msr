@@ -1,0 +1,143 @@
+package lu.uni.lassy.excalibur.examples.helloworld.usecases {
+	import lu.uni.lassy.messir.libraries.calendar
+	import lu.uni.lassy.messir.libraries.collections
+	import lu.uni.lassy.messir.libraries.math
+	import lu.uni.lassy.messir.libraries.primitives
+	import lu.uni.lassy.messir.libraries.string
+	import lu.uni.lassy.excalibur.examples.helloworld.environment
+	import lu.uni.lassy.excalibur.myproject.concepts.primarytypes.classes
+	import lu.uni.lassy.excalibur.myproject.concepts.primarytypes.datatypes
+
+	Use Case Model {
+
+		use case system subfunction sfTriggerAlert(AMessage: dtString, AReport: dtFile) {
+			actor actMedicalDepartement[primary, active]
+			returned messages {
+				ieAlertMessage(AMessage, AReport) returned to actCoordinator
+			}
+		}
+
+		use case system subfunction sfConfirmAlert() {
+			actor actCoordinator[primary, active]
+			returned messages {
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!	CRISIS STATE SET TO ONE !!!!!!!!!!!!!!!!
+				ieStart(AMessage) returned to actAll
+			}
+		}
+
+		use case system subfunction sfSendMission(Receiver:dtString, Mission:dtMission) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieNotify(AMission) returned to actTeamLeader
+			}
+		}
+		
+		use case system subfunction sfAcceptMission(Mission: AMission) {
+			actor actTeamLeader [primary, active]
+			returned messages {
+				ieAddTeam(AMission) returned to Mission
+				ieSendInformation(AMission) returned to actTeamMembers 			}
+		}
+			use case system subfunction sfAddZone(Type: enTypeOne, ShowZone: dtBoolean, Height: dtInteger, Width: dtInteger, Location: dtString) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieMakeNews(ANews) returned to actAll
+				ieUpdateMap(AZone) returned to actAll
+				
+			}
+		}
+			use case system subfunction sfStatistiques(Mission: AMission) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieStats() returned to actCoordinator
+			}
+		}
+			use case system subfunction sfDeleteZone(Zone: dtAZone) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieUpdateMap(AZone) returned to actAll			
+			}
+		}
+		
+		use case system subfunction sfAffectedTeamToMission(AdtMission:dtMission) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieShowPerson(actTeamLeader) returned to actCoordinator			
+			}
+		}
+		use case system subfunction sfActivityLabel(AdtMission:dtMission) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieActivityColor(ColorGreen) returned to actCoordinator			
+			}
+		}
+		
+		use case system subfunction sfSetZone(Zone: AZone, Type: enTypeOne, ShowZone: boolean, Height: integer, Width: integer, GPSLocation: dtGeolocation) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieNotify(ANews) returned to actAll
+				ieUpdateMap(AZone) returned to actAll
+			}
+		}
+		
+		
+		use case system subfunction sfSafePlaceFinder(GPSLocation: dtGeolocation) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieLinkToRoute(Destination) returned to actAll			
+			}
+		}
+		use case system subfunction sfFindPerson(Name: dtString, Function: dtString) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieDisplay(Person) returned to actAll			
+			}
+		}
+		use case system subfunction sfAlertGPSZone(GPSLocation: dtGeolocation, Zones: AZones ) {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieWarning() returned to actAll			
+			}
+		}
+
+		use case system subfunction oeHelloWorld() {
+			actor actYou[primary, active]
+			returned messages {
+				ieHelloWorld(AMessage) returned to actYou
+			}
+		}
+
+		use case system usergoal ugHelloWorld() {
+			actor actYou[primary, active]
+			actor actMsrCreator[secondary, active]
+			reuse oeCreateSystemAndEnvironment[1 .. 1]
+			reuse oeHelloWorld[1 .. *]
+			step a:actMsrCreator executes oeCreateSystemAndEnvironment()
+			step b:actYou executes oeHelloWorld
+			ordering constraint "at least a"
+			ordering constraint "if b then previously a"
+		}
+
+		use case instance uciSimpleAndComplete:ugHelloWorld {
+			actors {
+				theCreator:actMsrCreator you:actYou
+			}
+			use case steps {
+				theCreator executed instanceof subfunction oeCreateSystemAndEnvironment {
+				}
+				you executed instanceof subfunction oeHelloWorld {
+					oeHelloWorld.ieHelloWorld('HelloWorld !') returned to you
+				}
+			}
+		}
+		//    use case instance uciSimpleAndComplete : ugHelloWorld {
+
+		//      related test case instance lu.uni.lassy.excalibur.examples.helloworld.tests.instances.instance01
+		use case system subfunction sfGeo() {
+			actor actCoordinator[primary, active]
+			returned messages {
+				ieGeo returned to actCoordinator
+			}
+		}
+	}
+}

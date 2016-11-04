@@ -1,0 +1,43 @@
+package lu.uni.lassy.excalibur.examples.helloworld.tests.instances {
+  
+import lu.uni.lassy.messir.libraries.primitives
+import lu.uni.lassy.excalibur.examples.helloworld.environment
+import lu.uni.lassy.excalibur.examples.helloworld.concepts
+import lu.uni.lassy.excalibur.examples.helloworld.tests
+
+Test Model {
+
+  test case instance instance01:tc01{
+
+   test step instance tsi01:tc01.ts01SystemCreation {
+      variables {
+        Creator: tc01.ts01SystemCreation.Creator = "theCreator"
+      }
+        oracle {
+         satisfaction = "true"
+        }
+       test results { pre-protocol = "true"  
+                      pre-functional = "true" 
+                      post-functional = "true"
+       }
+}   
+   test step instance tsi02:tc01.ts02AskForHelloMessage {
+      variables {
+        you: tc01.ts02AskForHelloMessage.TheActor = "you"
+      }
+        oracle {
+         satisfaction = "true"
+         received message {
+           AMessage : tc01.ts02AskForHelloMessage.AMessage = 'HelloWorld !'
+           tsi02.you received from system actYou.inactYou.ieHelloWorld(AMessage)
+         }
+        }
+       test results { pre-protocol = "true"  
+                      pre-functional = "true" 
+                      post-functional = "true"
+       }
+}   
+
+}
+}
+}

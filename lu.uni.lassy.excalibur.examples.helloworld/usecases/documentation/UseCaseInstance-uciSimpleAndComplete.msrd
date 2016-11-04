@@ -1,0 +1,11 @@
+@@Instance Use Case lu.uni.lassy.excalibur.examples.helloworld.usecases.uciSimpleAndComplete
+@description
+"
+Simple and complete illustration of the HelloWorld user goal use case execution.
+"
+@remark
+"the first step is executed by the unique and always existing \msrcode{actMsrCreator} actor instance (named here \msrcode{theCreator}) requests the initialization of the system and its environment. The environment is made of two actor instances (one for each actor type)."
+
+@remark
+"the second step request the system to answer by sending an Hello message."
+@endRemarks

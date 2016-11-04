@@ -1,0 +1,10 @@
+
+@@view em-gv-01 hidden
+@model Environment 
+@level Global
+@number 2
+@description 
+'shows the only primary type class type \msrmessir \msrcode{ctState} class together with the environment elements. This view is global since it shows the \msrcode{ctState} class type that does not belong to the environment.
+'
+@caption "The environment and its relationships with the concept model"
+@scale MaxWidth

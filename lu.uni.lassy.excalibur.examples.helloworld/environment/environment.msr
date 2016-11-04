@@ -1,0 +1,229 @@
+package lu.uni.lassy.excalibur.examples.helloworld.environment {
+ 
+import lu.uni.lassy.messir.libraries.primitives
+import lu.uni.lassy.excalibur.examples.helloworld.concepts
+import lu.uni.lassy.messir.libraries.calendar
+	import lu.uni.lassy.messir.libraries.math
+	import lu.uni.lassy.messir.libraries.primitives
+	import lu.uni.lassy.messir.libraries.string
+	import lu.uni.lassy.excalibur.examples.helloworld.environment
+	import 
+
+/******************************************************/
+/********* ENVIRONMENT MODEL     **********************/
+/******************************************************/
+
+  
+
+
+	Environment Model {
+
+actor actTeamMembers role rnactTeamMembers cardinality [1..*] {
+
+	input interface inactTeamMembers {
+	operation ieSendInformation(Mission: AMission):ptBoolean
+	}
+	output interface outactTeamMembers {
+	operation sfAffectedTeamToMission(AdtMission:dtMission):ptBoolean
+	}
+}
+
+actor actAll role rnactAll cardinality [1..*] {
+
+	input interface inactAll {
+	operation ieLinkToRoute(Destination: dtString):ptBoolean
+	operation ieStart(Message: AMessage):ptBoolean
+	operation ieMakeNews(News: ANews):ptBoolean
+	operation ieUpdateMap(Zone: AZone):ptBoolean
+	operation ieWarning():ptBoolean
+	}
+	output interface outactAll {
+		operation sfSafePlaceFinder(GPSLocation: dtGeolocation):ptBoolean
+		operation sfAlertGPSZone(GPSLocation: dtGeolocation, Zones: AZones ):ptBoolean
+	}
+}
+
+actor actCoordinator role rnactCoordinator cardinality [1..*] {
+
+	input interface inactCoordinator {
+	
+	operation ieAddTeam(Mission: AMission):ptBoolean
+	
+	}
+	output interface outactCoordinator {
+	
+	operation ieAlertMessage(Message: AMessage, Report: AReport):ptBoolean	
+	operation sfConfirmAlert():ptBoolean
+	operation sfSendMission(Receiver:dtString, Mission:dtMission):ptBoolean
+	operation sfAddZone(Type: enTypeOne, ShowZone: dtBoolean, Height: dtInteger, Width: dtInteger, Location: dtString):ptBoolean
+	operation sfDeleteZone(Zone: AZone):ptBoolean
+	operation ieShowPerson(actTeamLeader):ptBoolean
+	operation sfSetZone(Zone: AZone, Type: enTypeOne, ShowZone: boolean, Height: dtInteger, Width: dtInteger, GPSLocation: dtGeolocation):ptBoolean
+	}
+}
+
+
+actor actAdministrator role rnactAdministrator cardinality [1..*] {
+
+	input interface inactAdministrator {
+
+	}
+	output interface outactAdministrator {
+
+	}
+}
+
+actor actMedicalDepartement role rnactMedicalDepartement cardinality [1..*] {
+
+	input interface inactMedicalDepartement {
+
+
+	}
+	output interface outactMedicalDepartement {
+	operation sfTriggerAlert(AMessage: dtString, AReport: dtFile):ptBoolean
+	}
+}
+
+actor actAuthorities role rnactAuthorities cardinality [1..*] {
+
+	input interface inactAuthorities {
+
+	}
+	output interface outactAuthorities {
+
+	}
+}
+
+actor actDoctor role rnactDoctor cardinality [1..*] {
+
+	input interface inactDoctor {
+
+	}
+	output interface outactDoctor {
+
+	}
+}
+
+actor actTeamLeader role rnactTeamLeader cardinality [1..*] {
+
+	input interface inactTeamLeader {
+	
+	operation ieNotify(Mission: AMission):ptBoolean
+	}
+	output interface outactTeamLeader {
+
+	operation sfAcceptMission(Mission: AMission):ptBoolean
+	
+	}
+}
+
+	}
+
+
+}
+
+    actor actYou role rnactYou cardinality [0..*]{
+
+      operation init():ptBoolean
+
+      output interface outactYou{
+        operation oeHelloWorld():ptBoolean
+      }
+      
+      input interface inactYou{
+        operation ieHelloWorld(AMessage:ptString):ptBoolean
+      }
+    }
+    
+    actor actMsrCreator role rnactMsrCreator cardinality [1..1] {
+     
+      output interface outactMsrCreator {
+        operation oeCreateSystemAndEnvironment():ptBoolean      
+      }
+      
+      input interface inactMsrCreator {
+      }
+    }
+  }
+
+/******************************************************/
+/********* OPERATION(S) - SYSTEM **********************/
+/******************************************************/
+
+Operation Model {
+
+operation:  actYou.outactYou.oeHelloWorld():ptBoolean
+{
+preP{ 
+/* Pre Protocol:*/
+/* PreP01 */
+let AvpStarted: ptBoolean in
+self.rnActor.rnSystem.vpStarted = AvpStarted
+and AvpStarted = true
+}
+preF{true}
+
+postF{
+let TheactYou:actYou in
+let AptString:ptString in
+/* Post Functional:*/
+/* PostF01 */
+AptString = 'Hello World !'
+and self.rnActor.InterfaceIN = TheactYou
+and TheactYou.rnInterfaceIN^ieHelloWorld(AptString)
+}
+postP{true}
+
+prolog{"src/Operations/Environment/OUT/ctYouAsActorOutputInterface-oeHelloWorld.pl"}
+}
+/******************************************************/
+
+operation: actMsrCreator.outactMsrCreator.oeCreateSystemAndEnvironment():ptBoolean
+{preP{true}
+preF{true}
+
+postF{
+let TheState:ctState in
+let AactMsrCreator:actMsrCreator in
+
+/* Post Functional:*/
+/* PostF01 */ 
+TheState.init(true) 
+
+/* PostF02 */ 
+and TheState.rnactYou->size() = 1
+and TheState.rnactYou
+  ->forAll(cca:actYou | cca.init())
+
+/* PostF03 */ 
+and AactMsrCreator.init()
+}
+postP{
+/* Post Protocol:*/
+/* PostP01 */ 
+let TheState:ctState in
+TheState.vpStarted = true
+}
+prolog{"src/Operations/Environment/OUT/ctMsrCreatorOutputInterface-oeCreateSystemAndEnvironment.pl"}}
+/******************************************************/
+/********* OPERATION(S) - ACTOR  **********************/
+/******************************************************/
+
+operation: actYou.init():ptBoolean
+{
+postF{
+if (
+/* Post Functional:*/
+/* Post F01 */
+    (Self.oclIsNew and self = Self)
+/* Post F02 */    
+    and self.InterfaceIN.oclIsNew()
+    and self.InterfaceOUT.oclIsNew()
+    )
+    then (result = true)
+    else (result = false)
+    endif
+  }
+}
+}
+}

@@ -1,0 +1,8 @@
+package usecases.ucisfGeo {
+	import lu.uni.lassy.excalibur.examples.helloworld.usecases
+
+	Use Case Model {
+
+		
+	}
+}

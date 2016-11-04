@@ -1,0 +1,49 @@
+package lu.uni.lassy.excalibur.examples.helloworld.tests {
+
+import lu.uni.lassy.messir.libraries.primitives
+import lu.uni.lassy.excalibur.examples.helloworld.environment
+import lu.uni.lassy.excalibur.examples.helloworld.concepts
+
+  Test Model{
+    test case tc01 order 01{
+//---------------------------------------------------------------------
+      test step ts01SystemCreation order 01 {
+        variables{
+            Creator:actMsrCreator
+          }
+        constraints{true}
+        test message{
+          out: Creator sends to system
+                       actMsrCreator.outactMsrCreator.oeCreateSystemAndEnvironment()
+          }
+        oracle{
+          constraints{
+            true
+          }
+        }
+      }
+//---------------------------------------------------------------------
+    test step ts02AskForHelloMessage order 02 {
+        variables{
+            TheActor:actYou
+          }
+        constraints{
+            TheActor=TheSystem.rnactYou->any2(true) 
+        }
+        test message{
+          out:TheActor sends to system actYou.outactYou.oeHelloWorld()
+        }
+        oracle{
+          variables{
+              AMessage: ptString
+          }
+          constraints{
+          AMessage = 'HelloWorld !'
+          TheActor.actYou.inactYou.ieHelloWorld(AMessage)
+          }
+        }
+      }
+//---------------------------------------------------------------------
+    }
+  }
+}

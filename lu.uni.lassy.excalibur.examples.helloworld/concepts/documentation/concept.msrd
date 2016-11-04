@@ -1,0 +1,52 @@
+/******************************************************/
+/********* TYPES   SIGNATURE DOCUMENTATION  **********/
+/******************************************************/
+
+@@Primary Type Class lu.uni.lassy.excalibur.examples.helloworld.concepts.ctState
+@description
+"used to represent \msrhelloworld global state variables.
+"
+@attribute lu.uni.lassy.excalibur.examples.helloworld.concepts.ctState.vpStarted
+    "
+    The instance of a \msrcode{ctState} is defined as a singleton of one value representing a protocol variable indicating if the system is started or not. After system creation, there is always only one instance of this class.
+"
+@endAttributes
+@operation lu.uni.lassy.excalibur.examples.helloworld.concepts.ctState.init
+"the \msrcode{ctState} class introduces an operation for instance creation and initialization (this is imposed for all primary class types by the \msrmessir method \cite{messirbook}).
+"
+@endOperations
+/******************************************************/
+/********* TYPE OPERATIONS DOCUMENTATION **************/
+/******************************************************/
+@@Operation
+lu.uni.lassy.excalibur.examples.helloworld.concepts.ctState.init
+//add first parameter below
+@parameter lu.uni.lassy.excalibur.examples.helloworld.concepts.ctState.init.AvpStarted
+"the initial value for the protocol variable"
+@endParameters
+@description
+"
+Specify the initialization of an instance of class \msrcode{ctState}. 
+"
+@preP
+"
+Since logicial operations are not system operations triggered by actor output messages, they cannot be constrained by protocol variables. They do not participate to the system's life cycle.
+"
+@endPreP
+@preF
+"
+No pre-functional condition ! true as pre functional condition, which means that this boolean operation should be total over its domain made of the system state values and input parameter values. 
+"
+@endPreF
+
+@postF
+"
+The current \msrcode{actYou} instance should be a new instance in the post state of the system whose attribute value should be equal to the value given as parameter.
+As a boolean operation it should be return true when the complete post condition is satified, or false otherwise.
+"
+@endPostF
+@postP
+"
+creating a \msrcode{ctState} isntance has no impact on the system's life cycle.
+"
+@endPostP

@@ -1,0 +1,16 @@
+ExternalReportFiles=
+HumanReadableProjectName=helloworld
+ImportedPackages=/lu.uni.lassy.excalibur.standard.specification.libraries/library/primitives.msr,lu.uni.lassy.messir.libraries.primitives;
+IncludeUndocumentedMessirSpecificationElements=true
+OperationModelSectionIncludeMCLSpecification=true
+OperationModelSectionIncludeOCLSpecification=true
+OperationModelSectionIncludePrologCode=true
+ReportProjectName=lu.uni.lassy.excalibur.examples.helloworld.report
+SimulationProjectName=lu.uni.lassy.excalibur.examples.helloworld.simulation
+StandardLibrariesProjectName=lu.uni.lassy.excalibur.standard.specification.libraries
+TestModelSectionIncludeMCLSpecification=true
+TestModelSectionIncludePrologCode=true
+eclipse.preferences.version=1
+enableProjectSpecificMsrLicenseFolding=false
+msrCommentsFolding=true
+msrLicenseFolding=true

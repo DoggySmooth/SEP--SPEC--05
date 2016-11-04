@@ -1,0 +1,6 @@
+@@view uc-ugHelloWorld
+@model Use-Case lu.uni.lassy.excalibur.examples.helloworld.usecases.ugHelloWorld
+@description "\msrcode{ugHelloWorld} - user goal use case diagram"
+@caption
+"\msrcode{ugHelloWorld} - user-goal use case diagram
+"

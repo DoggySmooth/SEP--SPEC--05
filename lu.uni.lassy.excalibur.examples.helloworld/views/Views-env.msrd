@@ -1,0 +1,11 @@
+@@view env-lv-01
+@model Environment
+@level Local
+@number 1
+@description 
+'
+shows all the \msrhelloworld actors with their input and output interfaces. 
+It is a "local" view because all the elements shown belong to the 
+set of elements defining the system environment.
+'
+@caption 'HelloWorld actors with their interfaces.'

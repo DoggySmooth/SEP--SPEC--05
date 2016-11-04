@@ -1,0 +1,7 @@
+
+@@view uc-oeCreateSystemAndEnvironment
+@model Use-Case lu.uni.lassy.excalibur.examples.helloworld.usecases.oeCreateSystemAndEnvironment 
+@description "shows the diagram for the \msrcode{oeCreateSystemAndEnvironment} subfunction use case."
+@caption 
+"\msrcode{oeCreateSystemAndEnvironment} - subfunction use case diagram
+"

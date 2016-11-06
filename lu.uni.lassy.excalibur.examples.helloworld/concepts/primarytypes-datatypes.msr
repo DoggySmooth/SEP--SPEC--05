@@ -1,0 +1,77 @@
+/*
+* @author Phil
+* @date Sun Nov 06 16:26:41 CET 2016
+*/
+
+package lu.uni.lassy.excalibur.examples.helloworld.concepts.messir.msr {
+
+	import lu.uni.lassy.messir.libraries.calendar
+	import lu.uni.lassy.messir.libraries.math
+	import lu.uni.lassy.messir.libraries.primitives
+	import lu.uni.lassy.messir.libraries.string
+
+	Concept Model {
+
+		Primary Types {
+		
+		datatype dtTeamLeaderID extends dtAbstractID {
+			}
+		
+		
+		datatype dtAbstractID {
+				attribute ID:dtString
+				operation is():ptBoolean
+			}
+		
+		datatype dtMission {
+				attribute Title:dtString
+				attribute Level:dtString
+				attribute Text:dtString
+				attribute Start:dtTime
+				attribute distance:dtInteger
+				attribute contacts:dtString
+				
+				operation is():ptBoolean
+			}
+			
+			datatype dtNews {
+				attribute Title:dtString
+				attribute Level:dtString
+				attribute Text:dtString
+				attribute xAgo:dtTime
+				
+				operation is():ptBoolean
+			}
+			
+			datatype dtZone {
+				attribute zoneID:dtString
+				attribute zoneType:dtString
+				attribute height:dtString
+				attribute width:dtTime
+				attribute location:dtString
+				
+				operation is():ptBoolean
+			}
+			
+			datatype dtGeolocation {
+				attribute latitude:dtInteger
+				attribute longtitude:dtInteger
+				operation is():ptBoolean
+				
+			}
+			
+			enum enTypeOne {
+				constants["Danger Zone", "Unsafe Zone", "Safe Zone", "CheckPoint"]
+				operation is():ptBoolean
+			}
+			
+		}
+
+		Secondary Types {
+
+		}
+
+	}
+
+
+}

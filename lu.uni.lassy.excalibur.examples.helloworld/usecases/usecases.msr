@@ -5,13 +5,13 @@ package lu.uni.lassy.excalibur.examples.helloworld.usecases {
 	import lu.uni.lassy.messir.libraries.primitives
 	import lu.uni.lassy.messir.libraries.string
 	import lu.uni.lassy.excalibur.examples.helloworld.environment
-	import lu.uni.lassy.excalibur.myproject.concepts.primarytypes.classes
-	import lu.uni.lassy.excalibur.myproject.concepts.primarytypes.datatypes
-
+	import lu.uni.lassy.excalibur.example.concepts.primarytypes.classes
+	import lu.uni.lassy.excalibur.examples.helloworld.concepts.messir.msr
 	Use Case Model {
 
-		use case system subfunction sfTriggerAlert(AMessage: dtString, AReport: dtFile) {
+		use case system subfunction sfTriggerAlert(AMessage: dtString, AReport: dtString) {
 			actor actMedicalDepartement[primary, active]
+			actor actCoordinator[secondary]
 			returned messages {
 				ieAlertMessage(AMessage, AReport) returned to actCoordinator
 			}
@@ -19,6 +19,8 @@ package lu.uni.lassy.excalibur.examples.helloworld.usecases {
 
 		use case system subfunction sfConfirmAlert() {
 			actor actCoordinator[primary, active]
+			actor actAll[secondary]
+			
 			returned messages {
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!	CRISIS STATE SET TO ONE !!!!!!!!!!!!!!!!
 				ieStart(AMessage) returned to actAll
@@ -27,52 +29,58 @@ package lu.uni.lassy.excalibur.examples.helloworld.usecases {
 
 		use case system subfunction sfSendMission(Receiver:dtString, Mission:dtMission) {
 			actor actCoordinator[primary, active]
+			actor actTeamLeader[secondary]
+			
 			returned messages {
 				ieNotify(AMission) returned to actTeamLeader
 			}
 		}
 		
-		use case system subfunction sfAcceptMission(Mission: AMission) {
+		use case system subfunction sfAcceptMission(Mission: dtMission) {
 			actor actTeamLeader [primary, active]
+			actor actCoordinator [secondary]
+			actor actTeamMembers [secondary]
 			returned messages {
-				ieAddTeam(AMission) returned to Mission
+				ieAddTeam(AMission) returned to actCoordinator
 				ieSendInformation(AMission) returned to actTeamMembers 			}
 		}
-			use case system subfunction sfAddZone(Type: enTypeOne, ShowZone: dtBoolean, Height: dtInteger, Width: dtInteger, Location: dtString) {
+			use case system subfunction sfAddZone(Type: enTypeOne, ShowZone: ptBoolean, Height: dtInteger, Width: dtInteger, Location: dtString) {
 			actor actCoordinator[primary, active]
+			actor actAll [secondary]
 			returned messages {
 				ieMakeNews(ANews) returned to actAll
 				ieUpdateMap(AZone) returned to actAll
 				
 			}
 		}
-			use case system subfunction sfStatistiques(Mission: AMission) {
+			use case system subfunction sfStatistiques(Mission: dtMission) {
 			actor actCoordinator[primary, active]
 			returned messages {
 				ieStats() returned to actCoordinator
 			}
 		}
-			use case system subfunction sfDeleteZone(Zone: dtAZone) {
+			use case system subfunction sfDeleteZone(Zone: dtZone) {
 			actor actCoordinator[primary, active]
+			actor actAll [secondary]
 			returned messages {
 				ieUpdateMap(AZone) returned to actAll			
 			}
 		}
 		
-		use case system subfunction sfAffectedTeamToMission(AdtMission:dtMission) {
+		use case system subfunction sfAffectedTeamToMission(AMission:dtMission) {
 			actor actCoordinator[primary, active]
 			returned messages {
 				ieShowPerson(actTeamLeader) returned to actCoordinator			
 			}
 		}
-		use case system subfunction sfActivityLabel(AdtMission:dtMission) {
+		use case system subfunction sfActivityLabel(AMission:dtMission) {
 			actor actCoordinator[primary, active]
 			returned messages {
 				ieActivityColor(ColorGreen) returned to actCoordinator			
 			}
 		}
 		
-		use case system subfunction sfSetZone(Zone: AZone, Type: enTypeOne, ShowZone: boolean, Height: integer, Width: integer, GPSLocation: dtGeolocation) {
+		use case system subfunction sfSetZone(Zone: dtZone, Type: enTypeOne, ShowZone: ptBoolean, Height: dtInteger, Width: dtInteger, GPSLocation: dtGeolocation) {
 			actor actCoordinator[primary, active]
 			returned messages {
 				ieNotify(ANews) returned to actAll
@@ -83,18 +91,21 @@ package lu.uni.lassy.excalibur.examples.helloworld.usecases {
 		
 		use case system subfunction sfSafePlaceFinder(GPSLocation: dtGeolocation) {
 			actor actCoordinator[primary, active]
+			actor actAll [secondary]
 			returned messages {
 				ieLinkToRoute(Destination) returned to actAll			
 			}
 		}
 		use case system subfunction sfFindPerson(Name: dtString, Function: dtString) {
 			actor actCoordinator[primary, active]
+			actor actAll [secondary]
 			returned messages {
 				ieDisplay(Person) returned to actAll			
 			}
 		}
 		use case system subfunction sfAlertGPSZone(GPSLocation: dtGeolocation, Zones: AZones ) {
 			actor actCoordinator[primary, active]
+			actor actAll [secondary]
 			returned messages {
 				ieWarning() returned to actAll			
 			}

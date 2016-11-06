@@ -7,7 +7,7 @@ import lu.uni.lassy.messir.libraries.calendar
 	import lu.uni.lassy.messir.libraries.primitives
 	import lu.uni.lassy.messir.libraries.string
 	import lu.uni.lassy.excalibur.examples.helloworld.environment
-	import 
+	import lu.uni.lassy.excalibur.examples.helloworld.concepts.messir.msr
 
 /******************************************************/
 /********* ENVIRONMENT MODEL     **********************/
@@ -21,7 +21,7 @@ import lu.uni.lassy.messir.libraries.calendar
 actor actTeamMembers role rnactTeamMembers cardinality [1..*] {
 
 	input interface inactTeamMembers {
-	operation ieSendInformation(Mission: AMission):ptBoolean
+	operation ieSendInformation(Mission: dtMission):ptBoolean
 	}
 	output interface outactTeamMembers {
 	operation sfAffectedTeamToMission(AdtMission:dtMission):ptBoolean
@@ -32,14 +32,14 @@ actor actAll role rnactAll cardinality [1..*] {
 
 	input interface inactAll {
 	operation ieLinkToRoute(Destination: dtString):ptBoolean
-	operation ieStart(Message: AMessage):ptBoolean
-	operation ieMakeNews(News: ANews):ptBoolean
-	operation ieUpdateMap(Zone: AZone):ptBoolean
+	operation ieStart(Message: dtString):ptBoolean
+	operation ieMakeNews(News: dtNews):ptBoolean
+	operation ieUpdateMap(Zone: dtZone):ptBoolean
 	operation ieWarning():ptBoolean
 	}
 	output interface outactAll {
 		operation sfSafePlaceFinder(GPSLocation: dtGeolocation):ptBoolean
-		operation sfAlertGPSZone(GPSLocation: dtGeolocation, Zones: AZones ):ptBoolean
+		operation sfAlertGPSZone(GPSLocation: dtGeolocation, Zones: dtZone ):ptBoolean
 	}
 }
 
@@ -47,18 +47,18 @@ actor actCoordinator role rnactCoordinator cardinality [1..*] {
 
 	input interface inactCoordinator {
 	
-	operation ieAddTeam(Mission: AMission):ptBoolean
+	operation ieAddTeam(Mission: dtMission):ptBoolean
+	operation ieAlertMessage(Message: dtString, Report: dtString):ptBoolean	
+	operation ieShowPerson(actTeamLeader: dtTeamLeaderID):ptBoolean
 	
 	}
 	output interface outactCoordinator {
 	
-	operation ieAlertMessage(Message: AMessage, Report: AReport):ptBoolean	
 	operation sfConfirmAlert():ptBoolean
 	operation sfSendMission(Receiver:dtString, Mission:dtMission):ptBoolean
-	operation sfAddZone(Type: enTypeOne, ShowZone: dtBoolean, Height: dtInteger, Width: dtInteger, Location: dtString):ptBoolean
-	operation sfDeleteZone(Zone: AZone):ptBoolean
-	operation ieShowPerson(actTeamLeader):ptBoolean
-	operation sfSetZone(Zone: AZone, Type: enTypeOne, ShowZone: boolean, Height: dtInteger, Width: dtInteger, GPSLocation: dtGeolocation):ptBoolean
+	operation sfAddZone(Type: enTypeOne, ShowZone: ptBoolean, Height: dtInteger, Width: dtInteger, Location: dtString):ptBoolean
+	operation sfDeleteZone(Zone: dtZone):ptBoolean
+	operation sfSetZone(Zone: dtZone, Type: enTypeOne, ShowZone: ptBoolean, Height: dtInteger, Width: dtInteger, GPSLocation: dtGeolocation):ptBoolean
 	}
 }
 
@@ -80,7 +80,7 @@ actor actMedicalDepartement role rnactMedicalDepartement cardinality [1..*] {
 
 	}
 	output interface outactMedicalDepartement {
-	operation sfTriggerAlert(AMessage: dtString, AReport: dtFile):ptBoolean
+	operation sfTriggerAlert(AMessage: dtString, AReport: dtString):ptBoolean
 	}
 }
 
@@ -107,20 +107,17 @@ actor actDoctor role rnactDoctor cardinality [1..*] {
 actor actTeamLeader role rnactTeamLeader cardinality [1..*] {
 
 	input interface inactTeamLeader {
+		operation ieAddTeam(Mission: dtMission):ptBoolean
 	
-	operation ieNotify(Mission: AMission):ptBoolean
+	operation ieNotify(Mission: dtMission):ptBoolean
 	}
 	output interface outactTeamLeader {
 
-	operation sfAcceptMission(Mission: AMission):ptBoolean
+	operation sfAcceptMission(Mission: dtMission):ptBoolean
 	
 	}
 }
 
-	}
-
-
-}
 
     actor actYou role rnactYou cardinality [0..*]{
 

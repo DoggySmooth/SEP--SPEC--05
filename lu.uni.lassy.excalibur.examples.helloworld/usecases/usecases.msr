@@ -1,15 +1,15 @@
 package lu.uni.lassy.excalibur.examples.helloworld.usecases {
 	import lu.uni.lassy.messir.libraries.calendar
-	import lu.uni.lassy.messir.libraries.collections
 	import lu.uni.lassy.messir.libraries.math
 	import lu.uni.lassy.messir.libraries.primitives
 	import lu.uni.lassy.messir.libraries.string
 	import lu.uni.lassy.excalibur.examples.helloworld.environment
-	import lu.uni.lassy.excalibur.example.concepts.primarytypes.classes
 	import lu.uni.lassy.excalibur.examples.helloworld.concepts.messir.msr
+	import lu.uni.lassy.excalibur.examples.helloworld.concepts
+
 	Use Case Model {
 
-		use case system subfunction sfTriggerAlert(AMessage: dtString, AReport: dtString) {
+		use case system subfunction sfTriggerAlert(AMessage:dtString, AReport:dtString) {
 			actor actMedicalDepartement[primary, active]
 			actor actCoordinator[secondary]
 			returned messages {
@@ -20,135 +20,191 @@ package lu.uni.lassy.excalibur.examples.helloworld.usecases {
 		use case system subfunction sfConfirmAlert() {
 			actor actCoordinator[primary, active]
 			actor actAll[secondary]
-			
 			returned messages {
-			//!!!!!!!!!!!!!!!!!!!!!!!!!!	CRISIS STATE SET TO ONE !!!!!!!!!!!!!!!!
 				ieStart(AMessage) returned to actAll
 			}
 		}
 
-		use case system subfunction sfSendMission(Receiver:dtString, Mission:dtMission) {
+		use case system subfunction sfSendMissionSetCamp(Receiver:dtString, Title:dtString, Location:dtInteger, Date:dtDate, Time:dtTime, Capacity:dtInteger, TeamsNeeded:dtInteger, Description:dtString) {
 			actor actCoordinator[primary, active]
 			actor actTeamLeader[secondary]
-			
+			actor actAuthorities[secondary]
+			actor actMedicalDepartement[secondary]
 			returned messages {
 				ieNotify(AMission) returned to actTeamLeader
+				ieMissionSent() returned to actCoordinator
+				ieNotifyAuthorities(Message) returned to actAuthorities
+				ieNotifyMedicalDep(Message) returned to actMedicalDepartement
 			}
 		}
-		
-		use case system subfunction sfAcceptMission(Mission: dtMission) {
-			actor actTeamLeader [primary, active]
-			actor actCoordinator [secondary]
-			actor actTeamMembers [secondary]
+
+		use case system subfunction sfSendMissionCheckpoints(Receiver:dtString, Title:dtString, Location:dtInteger, Date:dtDate, Time:dtTime, TeamsNeeded:dtInteger, sendInfectedTo:dtString, Description:dtString) {
+			actor actCoordinator[primary, active]
+			actor actTeamLeader[secondary]
+			actor actAuthorities[secondary]
+			actor actMedicalDepartement[secondary]
+			returned messages {
+				ieNotify(AMission) returned to actTeamLeader
+				ieMissionSent() returned to actCoordinator
+			}
+		}
+
+		use case system subfunction sfSendMissionTransferPeople(Receiver:dtString, Title:dtString, From:dtString, To:dtString, Time:dtTime, Date:dtDate, Quantity:dtInteger) {
+			actor actCoordinator[primary, active]
+			actor actTeamLeader[secondary]
+			actor actAuthorities[secondary]
+			returned messages {
+				ieNotify(AMission) returned to actTeamLeader
+				ieMissionSent() returned to actCoordinator
+			}
+		}
+
+		use case system subfunction sfSendMissionEvacuate(Receiver:dtString, Title:dtString, Type:dtString, From:dtString, To:dtString, Estimated:dtInteger) {
+			actor actCoordinator[primary, active]
+			actor actTeamLeader[secondary]
+			actor actAuthorities[secondary]
+			returned messages {
+				ieNotify(AMission) returned to actTeamLeader
+				ieNotifyAuthorities(Message) returned to actAuthorities
+				ieNotifyMedicalDep(Message) returned to actMedicalDepartement
+				ieMissionSent() returned to actCoordinator
+			}
+		}
+
+		use case system subfunction sfAcceptMission(Mission:ctMission) {
+			actor actTeamLeader[primary, active]
+			actor actCoordinator[secondary]
+			actor actTeamMembers[secondary]
 			returned messages {
 				ieAddTeam(AMission) returned to actCoordinator
-				ieSendInformation(AMission) returned to actTeamMembers 			}
+				ieSendInformation(AMission) returned to actTeamMembers
+			}
 		}
-			use case system subfunction sfAddZone(Type: enTypeOne, ShowZone: ptBoolean, Height: dtInteger, Width: dtInteger, Location: dtString) {
+
+		use case system subfunction sfAddZone(Type:enTypeOne, ShowZone:ptBoolean, Height:dtInteger, Width:dtInteger, Location:dtString) {
 			actor actCoordinator[primary, active]
-			actor actAll [secondary]
+			actor actAll[secondary]
 			returned messages {
 				ieMakeNews(ANews) returned to actAll
 				ieUpdateMap(AZone) returned to actAll
-				
 			}
 		}
-			use case system subfunction sfStatistiques(Mission: dtMission) {
+
+		use case system subfunction sfStatistiques(Mission:ctMission) {
 			actor actCoordinator[primary, active]
 			returned messages {
 				ieStats() returned to actCoordinator
 			}
 		}
-			use case system subfunction sfDeleteZone(Zone: dtZone) {
+
+		use case system subfunction sfDeleteZone(Zone:ctZone) {
 			actor actCoordinator[primary, active]
-			actor actAll [secondary]
+			actor actAll[secondary]
 			returned messages {
-				ieUpdateMap(AZone) returned to actAll			
+				ieUpdateMap(AZone) returned to actAll
 			}
 		}
-		
-		use case system subfunction sfAffectedTeamToMission(AMission:dtMission) {
+
+		use case system subfunction sfAffectedTeamToMission(AMission:ctMission) {
 			actor actCoordinator[primary, active]
 			returned messages {
-				ieShowPerson(actTeamLeader) returned to actCoordinator			
+				ieShowPerson(actTeamLeader) returned to actCoordinator
 			}
 		}
-		use case system subfunction sfActivityLabel(AMission:dtMission) {
+
+		use case system subfunction sfActivityLabel(AMission:ctMission) {
 			actor actCoordinator[primary, active]
 			returned messages {
-				ieActivityColor(ColorGreen) returned to actCoordinator			
+				ieActivityColor(ColorGreen) returned to actCoordinator
 			}
 		}
-		
-		use case system subfunction sfSetZone(Zone: dtZone, Type: enTypeOne, ShowZone: ptBoolean, Height: dtInteger, Width: dtInteger, GPSLocation: dtGeolocation) {
+
+		use case system subfunction sfSetZone(Zone:ctZone, Type:enTypeOne, ShowZone:ptBoolean, Height:dtInteger, Width:dtInteger, GPSLocation:dtGeolocation) {
 			actor actCoordinator[primary, active]
 			returned messages {
 				ieNotify(ANews) returned to actAll
 				ieUpdateMap(AZone) returned to actAll
 			}
 		}
-		
-		
-		use case system subfunction sfSafePlaceFinder(GPSLocation: dtGeolocation) {
+
+		use case system subfunction sfSafePlaceFinder(GPSLocation:dtGeolocation) {
 			actor actCoordinator[primary, active]
-			actor actAll [secondary]
+			actor actAll[secondary]
 			returned messages {
-				ieLinkToRoute(Destination) returned to actAll			
-			}
-		}
-		use case system subfunction sfFindPerson(Name: dtString, Function: dtString) {
-			actor actCoordinator[primary, active]
-			actor actAll [secondary]
-			returned messages {
-				ieDisplay(Person) returned to actAll			
-			}
-		}
-		use case system subfunction sfAlertGPSZone(GPSLocation: dtGeolocation, Zones: AZones ) {
-			actor actCoordinator[primary, active]
-			actor actAll [secondary]
-			returned messages {
-				ieWarning() returned to actAll			
+				ieLinkToRoute(Destination) returned to actAll
 			}
 		}
 
-		use case system subfunction oeHelloWorld() {
-			actor actYou[primary, active]
+		use case system subfunction sfFindPerson(Name:dtString, Function:dtString) {
+			actor actCoordinator[primary, active]
+			actor actAll[secondary]
 			returned messages {
-				ieHelloWorld(AMessage) returned to actYou
+				ieDisplay(Person) returned to actAll
 			}
 		}
 
-		use case system usergoal ugHelloWorld() {
-			actor actYou[primary, active]
-			actor actMsrCreator[secondary, active]
-			reuse oeCreateSystemAndEnvironment[1 .. 1]
-			reuse oeHelloWorld[1 .. *]
-			step a:actMsrCreator executes oeCreateSystemAndEnvironment()
-			step b:actYou executes oeHelloWorld
-			ordering constraint "at least a"
-			ordering constraint "if b then previously a"
+		use case system subfunction sfAlertGPSZone(GPSLocation:dtGeolocation, Zones:ctZone) {
+			actor actCoordinator[primary, active]
+			actor actAll[secondary]
+			returned messages {
+				ieWarning() returned to actAll
+			}
+		}
+		//    use case instances {
+		use case system usergoal ugCrisis() {
+			actor actMedicalDepartement[primary, active]
+			actor actCoordinator[primary, active]
+			actor actAll[secondary]
+			step a:actMedicalDepartement executes sfTriggerAlert(Message, Report)
+			step b:actCoordinator executes sfConfirmAlert()
 		}
 
-		use case instance uciSimpleAndComplete:ugHelloWorld {
+		use case instance ucCrisisEngaged:ugCrisis {
 			actors {
-				theCreator:actMsrCreator you:actYou
+				Tom:actMedicalDepartement Bob:actCoordinator All:actAll
 			}
 			use case steps {
-				theCreator executed instanceof subfunction oeCreateSystemAndEnvironment {
+				Tom executed instanceof subfunction sfTriggerAlert("Alert for Epidemic", "Report.doc") {
+					ieAlertMessage("Alert for Epidemic", "Report.doc") returned to Bob
 				}
-				you executed instanceof subfunction oeHelloWorld {
-					oeHelloWorld.ieHelloWorld('HelloWorld !') returned to you
+				Bob executed instanceof subfunction sfConfirmAlert() {
+					ieStart("EPIDEMIC DETECTED - CRISIS ENGAGED") returned to All
 				}
 			}
 		}
-		//    use case instance uciSimpleAndComplete : ugHelloWorld {
 
-		//      related test case instance lu.uni.lassy.excalibur.examples.helloworld.tests.instances.instance01
-		use case system subfunction sfGeo() {
+		use case system usergoal ugMission() {
 			actor actCoordinator[primary, active]
-			returned messages {
-				ieGeo returned to actCoordinator
+			actor actTeamLeader[primary, active]
+			actor actMedicalDepartement[secondary]
+			actor actAuthorities[secondary]
+			actor actTeamMembers[secondary]
+			
+			step a:actCoordinator executes sfSendMissionSetCamp(TeamLeaderID, Title, Location, Date, Time, Capacity, TeamsNeeded, Description)
+			step b:actTeamLeader executes sfAcceptMission(Mission)
+			
+		}
+		use case instance ucMission:ugMission {
+			actors {
+				Tom:actMedicalDepartement 
+				Bob:actCoordinator 
+				Joe:actTeamLeader
+				JoeTeam:actTeamMembers
+			}
+			use case steps {
+				Bob executed instanceof subfunction sfSendMissionSetCamp {
+					ieMissionSent() returned to Bob
+					ieNotify("A Mission") returned to Joe
+					
+					}
+				Joe executed instanceof subfunction sfAcceptMission() {
+					ieAddTeam("AMission") returned to JoeTeam
+					
+				}
 			}
 		}
+		
+		//      related test case instance lu.uni.lassy.excalibur.examples.helloworld.tests.instances.instance01
+
 	}
 }

@@ -1,0 +1,10 @@
+/*
+@author Phil
+@date Tue Nov 08 15:48:09 CET 2016
+*/
+
+
+@@view uci-ucMission
+@instance Use-Case lu.uni.lassy.excalibur.examples.helloworld.usecases.ucMission 
+@description ""
+@caption ""

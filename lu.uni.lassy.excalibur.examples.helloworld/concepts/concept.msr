@@ -1,36 +1,89 @@
-package lu.uni.lassy.excalibur.examples.helloworld.concepts{
-
-import lu.uni.lassy.messir.libraries.primitives
+package lu.uni.lassy.excalibur.examples.helloworld.concepts {
+	import lu.uni.lassy.messir.libraries.string
+	import lu.uni.lassy.messir.libraries.primitives
+	import lu.uni.lassy.messir.libraries.math
+	import lu.uni.lassy.messir.libraries.calendar
+	import lu.uni.lassy.excalibur.examples.helloworld.concepts.messir.msr
 
 	Concept Model {
-
 		Primary Types {
 
 			state class ctState {
-				attribute vpStarted: ptBoolean
-				operation init(AvpStarted:ptBoolean) : ptBoolean
-								
+				attribute vpStarted:ptBoolean
+				operation init(AvpStarted:ptBoolean):ptBoolean
+			}
+
+			class ctMission role rnctMission cardinality[1 .. *] {
+				attribute Title:dtString
+				attribute Level:dtString
+				attribute Text:dtString
+				attribute Start:dtTime
+				attribute distance:dtInteger
+				attribute contacts:dtString
+			}
+
+			class ctZone role rnctZone cardinality[1 .. *] {
+				attribute zoneID:dtString
+				attribute zoneType:dtString
+				attribute height:dtString
+				attribute width:dtTime
+				attribute location:dtString
+
+			}
+			
+			class ctTeamLeader role rnctTeamLeader cardinality[1 .. *] {
+				
+				attribute TeamLeaderID:dtTeamLeaderID
+				
+				
+				attribute zoneType:dtString
+				attribute height:dtString
+				attribute width:dtTime
+				attribute location:dtString
+
+			}
+			
+			class ctTeamMember role rnctTeamMember cardinality[1 .. *] {
+				
+				attribute TeamLeader:dtTeamLeaderID
+				attribute TeamMemberID:dtTeamMemberID
+				
+				
+				attribute zoneType:dtString
+				attribute height:dtString
+				attribute width:dtTime
+				attribute location:dtString
+
+			}
+
+			class ctNews role rnctNews cardinality[1 .. *] {
+				attribute Title:dtString
+				attribute Level:dtString
+				attribute Text:dtString
+				attribute xAgo:dtTime
+
 			}
 			
 		}
 	}
 
-Operation Model {
-			
-operation: ctState.init(AvpStarted:ptBoolean):ptBoolean
-{postF{
-if
-(
-/* Post Functional:*/
-/* Post F01 */
-self.vpStarted = AvpStarted
-and (Self.oclIsNew and self = Self)
-)
-then (result = true)
-else (result = false)
-endif	}
+	Operation Model {
 
-prolog {"src/Operations/Concepts/PrimaryTypesClasses/PrimaryTypesClasses-ctState-init.pl"}
+		operation: ctState.init(AvpStarted:ptBoolean):ptBoolean {
+			postF {
+				if(
+					/* Post Functional:*/
+					/* Post F01 */
+					self.vpStarted = AvpStarted and(Self.oclIsNew and self= Self))
+				then(result = true)
+				else(result = false)
+				endif
+
 	}
+	prolog {
+		"src/Operations/Concepts/PrimaryTypesClasses/PrimaryTypesClasses-ctState-init.pl"
+	}
+}
+
 }
 }

@@ -1,226 +1,128 @@
 package lu.uni.lassy.excalibur.examples.helloworld.environment {
- 
-import lu.uni.lassy.messir.libraries.primitives
-import lu.uni.lassy.excalibur.examples.helloworld.concepts
-import lu.uni.lassy.messir.libraries.calendar
+	import lu.uni.lassy.messir.libraries.primitives
+	import lu.uni.lassy.excalibur.examples.helloworld.concepts
+	import lu.uni.lassy.messir.libraries.calendar
 	import lu.uni.lassy.messir.libraries.math
 	import lu.uni.lassy.messir.libraries.primitives
 	import lu.uni.lassy.messir.libraries.string
 	import lu.uni.lassy.excalibur.examples.helloworld.environment
 	import lu.uni.lassy.excalibur.examples.helloworld.concepts.messir.msr
-
-/******************************************************/
-/********* ENVIRONMENT MODEL     **********************/
-/******************************************************/
-
-  
-
-
+	/******************************************************/
+	/********* ENVIRONMENT MODEL     **********************/
+	/******************************************************/
 	Environment Model {
+		
+		actor actTeamMembers role rnactTeamMembers cardinality[1 .. *] {
+			input interface inactTeamMembers {
+				
+				operation ieSendInformation(Mission:ctMission):ptBoolean
+				
+			}
+			output interface outactTeamMembers {
+				
+				operation sfAffectedTeamToMission(AdtMission:ctMission):ptBoolean
+				
+			}
+		}
+		
+		actor actAll role rnactAll cardinality[1 .. *] {
+			input interface inactAll {
+				
+				operation ieLinkToRoute(Destination:dtString):ptBoolean
+				operation ieStart(Message:dtString):ptBoolean
+				operation ieMakeNews(News:ctNews):ptBoolean
+				operation ieUpdateMap(Zone:ctZone):ptBoolean
+				operation ieWarning():ptBoolean
+				
+			}
+			
+			output interface outactAll {
+				
+				operation sfSafePlaceFinder(GPSLocation:dtGeolocation):ptBoolean
+				operation sfAlertGPSZone(GPSLocation:dtGeolocation, Zones:ctZone):ptBoolean
+				
+			}
+		}
+		
+		actor actCoordinator role rnactCoordinator cardinality[1 .. *] {
+			input interface inactCoordinator {
+				
+				operation ieAddTeam(Mission:ctMission):ptBoolean
+				operation ieAlertMessage(Message:dtString, Report:dtString):ptBoolean
+				operation ieShowPerson(actTeamLeader:dtTeamLeaderID):ptBoolean
+				operation ieMissionSent():ptBoolean
+				
+			}
+			output interface outactCoordinator {
+				
+				operation sfConfirmAlert():ptBoolean
+				operation sfSendMissionSetCamp(Receiver:dtString, Title:dtString, Location:dtInteger, Date:dtDate, Time:dtTime, Capacity:dtInteger, TeamsNeeded:dtInteger, Description:dtString):ptBoolean
+				operation sfSendMissionCheckpoints(Receiver:dtString, Title:dtString, Location:dtInteger, Date:dtDate, Time:dtTime, TeamsNeeded:dtInteger, sendInfectedTo:dtString, Description:dtString):ptBoolean
+				operation sfSendMissionTransferPeople(Receiver:dtString, Title:dtString, From:dtString, To:dtString, Time:dtTime, Date:dtDate, Quantity:dtInteger):ptBoolean
+				operation sfSendMissionEvacuate(Receiver:dtString, Title:dtString, Type:dtString, From:dtString, To:dtString, Estimated:dtInteger):ptBoolean
+				operation sfAddZone(Type:enTypeOne, ShowZone:ptBoolean, Height:dtInteger, Width:dtInteger, Location:dtString):ptBoolean
+				operation sfDeleteZone(Zone:ctZone):ptBoolean
+				operation sfSetZone(Zone:ctZone, Type:enTypeOne, ShowZone:ptBoolean, Height:dtInteger, Width:dtInteger, GPSLocation:dtGeolocation):ptBoolean
+				
+			}
+		}
+		
+		actor actAdministrator role rnactAdministrator cardinality[1 .. *] {
+			input interface inactAdministrator {
+			}
+			output interface outactAdministrator {
+			}
+		}
+		
+		
+		actor actMedicalDepartement role rnactMedicalDepartement cardinality[1 .. *] {
+			
+			input interface inactMedicalDepartement {
+				operation ieNotifyMedicalDep(Message:dtString):ptBoolean
+				
+			}
+			
+			output interface outactMedicalDepartement {
+				
+				operation sfTriggerAlert(AMessage:dtString, AReport:dtString):ptBoolean
+				
+			}
+		}
+		
+		
+		actor actAuthorities role rnactAuthorities cardinality[1 .. *] {
+			
+			input interface inactAuthorities {
+				
+				operation ieNotifyAuthorities(Message:dtString):ptBoolean
+			}
+			output interface outactAuthorities {
+			}
+		}
+		actor actDoctor role rnactDoctor cardinality[1 .. *] {
+			input interface inactDoctor {
+			}
+			output interface outactDoctor {
+			}
+		}
+		actor actTeamLeader role rnactTeamLeader cardinality[1 .. *] {
+			input interface inactTeamLeader {
+				operation ieAddTeam(Mission:ctMission):ptBoolean
+				operation ieNotify(Mission:ctMission):ptBoolean
+			}
+			output interface outactTeamLeader {
+				operation sfAcceptMission(Mission:ctMission):ptBoolean
+			}
+		}
+		
 
-actor actTeamMembers role rnactTeamMembers cardinality [1..*] {
-
-	input interface inactTeamMembers {
-	operation ieSendInformation(Mission: dtMission):ptBoolean
 	}
-	output interface outactTeamMembers {
-	operation sfAffectedTeamToMission(AdtMission:dtMission):ptBoolean
-	}
-}
+	/******************************************************/
+	/********* OPERATION(S) - SYSTEM **********************/
+	/******************************************************/
+	Operation Model {
 
-actor actAll role rnactAll cardinality [1..*] {
-
-	input interface inactAll {
-	operation ieLinkToRoute(Destination: dtString):ptBoolean
-	operation ieStart(Message: dtString):ptBoolean
-	operation ieMakeNews(News: dtNews):ptBoolean
-	operation ieUpdateMap(Zone: dtZone):ptBoolean
-	operation ieWarning():ptBoolean
-	}
-	output interface outactAll {
-		operation sfSafePlaceFinder(GPSLocation: dtGeolocation):ptBoolean
-		operation sfAlertGPSZone(GPSLocation: dtGeolocation, Zones: dtZone ):ptBoolean
-	}
-}
-
-actor actCoordinator role rnactCoordinator cardinality [1..*] {
-
-	input interface inactCoordinator {
 	
-	operation ieAddTeam(Mission: dtMission):ptBoolean
-	operation ieAlertMessage(Message: dtString, Report: dtString):ptBoolean	
-	operation ieShowPerson(actTeamLeader: dtTeamLeaderID):ptBoolean
-	
-	}
-	output interface outactCoordinator {
-	
-	operation sfConfirmAlert():ptBoolean
-	operation sfSendMission(Receiver:dtString, Mission:dtMission):ptBoolean
-	operation sfAddZone(Type: enTypeOne, ShowZone: ptBoolean, Height: dtInteger, Width: dtInteger, Location: dtString):ptBoolean
-	operation sfDeleteZone(Zone: dtZone):ptBoolean
-	operation sfSetZone(Zone: dtZone, Type: enTypeOne, ShowZone: ptBoolean, Height: dtInteger, Width: dtInteger, GPSLocation: dtGeolocation):ptBoolean
-	}
-}
 
-
-actor actAdministrator role rnactAdministrator cardinality [1..*] {
-
-	input interface inactAdministrator {
-
-	}
-	output interface outactAdministrator {
-
-	}
-}
-
-actor actMedicalDepartement role rnactMedicalDepartement cardinality [1..*] {
-
-	input interface inactMedicalDepartement {
-
-
-	}
-	output interface outactMedicalDepartement {
-	operation sfTriggerAlert(AMessage: dtString, AReport: dtString):ptBoolean
-	}
-}
-
-actor actAuthorities role rnactAuthorities cardinality [1..*] {
-
-	input interface inactAuthorities {
-
-	}
-	output interface outactAuthorities {
-
-	}
-}
-
-actor actDoctor role rnactDoctor cardinality [1..*] {
-
-	input interface inactDoctor {
-
-	}
-	output interface outactDoctor {
-
-	}
-}
-
-actor actTeamLeader role rnactTeamLeader cardinality [1..*] {
-
-	input interface inactTeamLeader {
-		operation ieAddTeam(Mission: dtMission):ptBoolean
-	
-	operation ieNotify(Mission: dtMission):ptBoolean
-	}
-	output interface outactTeamLeader {
-
-	operation sfAcceptMission(Mission: dtMission):ptBoolean
-	
-	}
-}
-
-
-    actor actYou role rnactYou cardinality [0..*]{
-
-      operation init():ptBoolean
-
-      output interface outactYou{
-        operation oeHelloWorld():ptBoolean
-      }
-      
-      input interface inactYou{
-        operation ieHelloWorld(AMessage:ptString):ptBoolean
-      }
-    }
-    
-    actor actMsrCreator role rnactMsrCreator cardinality [1..1] {
-     
-      output interface outactMsrCreator {
-        operation oeCreateSystemAndEnvironment():ptBoolean      
-      }
-      
-      input interface inactMsrCreator {
-      }
-    }
-  }
-
-/******************************************************/
-/********* OPERATION(S) - SYSTEM **********************/
-/******************************************************/
-
-Operation Model {
-
-operation:  actYou.outactYou.oeHelloWorld():ptBoolean
-{
-preP{ 
-/* Pre Protocol:*/
-/* PreP01 */
-let AvpStarted: ptBoolean in
-self.rnActor.rnSystem.vpStarted = AvpStarted
-and AvpStarted = true
-}
-preF{true}
-
-postF{
-let TheactYou:actYou in
-let AptString:ptString in
-/* Post Functional:*/
-/* PostF01 */
-AptString = 'Hello World !'
-and self.rnActor.InterfaceIN = TheactYou
-and TheactYou.rnInterfaceIN^ieHelloWorld(AptString)
-}
-postP{true}
-
-prolog{"src/Operations/Environment/OUT/ctYouAsActorOutputInterface-oeHelloWorld.pl"}
-}
-/******************************************************/
-
-operation: actMsrCreator.outactMsrCreator.oeCreateSystemAndEnvironment():ptBoolean
-{preP{true}
-preF{true}
-
-postF{
-let TheState:ctState in
-let AactMsrCreator:actMsrCreator in
-
-/* Post Functional:*/
-/* PostF01 */ 
-TheState.init(true) 
-
-/* PostF02 */ 
-and TheState.rnactYou->size() = 1
-and TheState.rnactYou
-  ->forAll(cca:actYou | cca.init())
-
-/* PostF03 */ 
-and AactMsrCreator.init()
-}
-postP{
-/* Post Protocol:*/
-/* PostP01 */ 
-let TheState:ctState in
-TheState.vpStarted = true
-}
-prolog{"src/Operations/Environment/OUT/ctMsrCreatorOutputInterface-oeCreateSystemAndEnvironment.pl"}}
-/******************************************************/
-/********* OPERATION(S) - ACTOR  **********************/
-/******************************************************/
-
-operation: actYou.init():ptBoolean
-{
-postF{
-if (
-/* Post Functional:*/
-/* Post F01 */
-    (Self.oclIsNew and self = Self)
-/* Post F02 */    
-    and self.InterfaceIN.oclIsNew()
-    and self.InterfaceOUT.oclIsNew()
-    )
-    then (result = true)
-    else (result = false)
-    endif
-  }
-}
 }
 }

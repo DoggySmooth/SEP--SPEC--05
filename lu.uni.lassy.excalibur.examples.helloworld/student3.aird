@@ -248,6 +248,8 @@
   <semanticResources>usecases/usecaseinstance-sfGeo-ucisfGeo.msr</semanticResources>
   <semanticResources>documentation/View-uci-uciSimpleAndComplete.msrd</semanticResources>
   <semanticResources>concepts/primarytypes-datatypes.msr</semanticResources>
+  <semanticResources>documentation/View-uci-ucCrisisEngaged.msrd</semanticResources>
+  <semanticResources>documentation/View-uci-ucMission.msrd</semanticResources>
   <ownedViews xmi:type="viewpoint:DView" xmi:id="_ddOukPWqEeSOM9Kfym77Zg">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/lu.uni.lassy.excalibur.ui.viewer/description/excalibur_models.odesign#//@ownedViewpoints[name='msr-viewpoint']"/>
   </ownedViews>

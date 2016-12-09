@@ -1,6 +1,0 @@
-@@view uc-oeHelloWorld
-@model Use-Case lu.uni.lassy.excalibur.examples.helloworld.usecases.oeHelloWorld
-@description "shows the diagram for the \msrcode{oeHelloWorld} subfunction use case."
-@caption 
-"\msrcode{oeHelloWorld} - subfunction use case diagram
-"
